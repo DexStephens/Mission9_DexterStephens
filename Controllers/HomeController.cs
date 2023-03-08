@@ -14,16 +14,20 @@ namespace Mission9_DexterStephens.Controllers
             bookstoreRepository = newRepository;
         }
 
-        public IActionResult Index(int pageNum = 1)
+        public IActionResult Index(string bookCategory, int pageNum = 1)
         {
             int pageSize = 10;
 
             var booksVM = new BooksViewModel(
                 bookstoreRepository.Books
+                .Where(x => x.Category == bookCategory || bookCategory == null)
                 .OrderBy(x => x.Title)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize),
-                new PageInfo(bookstoreRepository.Books.Count(), pageSize, pageNum)
+                new PageInfo(
+                    bookCategory == null ? bookstoreRepository.Books.Count() : bookstoreRepository.Books.Where(x => x.Category == bookCategory).Count(), 
+                    pageSize, 
+                    pageNum)
                 );
 
             return View(booksVM);

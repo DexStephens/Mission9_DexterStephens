@@ -1,9 +1,10 @@
-﻿@model Books
+﻿@using Mission9_DexterStephens.Infrastructure;
+@model Books
 <div class="card card-outline-primary m-1 p-1">
     <div class="bg-faded p-1">
         <h4>
             @Model.Title
-            <span class="badge rounded-pill bg-primary" style="float:right">
+            <span class="badge rounded-pill bg-primary float-end">
                 <small>@Model.Price</small>
             </span>
         </h4>
@@ -12,6 +13,13 @@
     <div class="card-text p-1"><b>Publisher: </b>@Model.Publisher</div>
     <div class="card-text p-1"><b>Category: </b>@Model.Category</div>
     <div class="card-text p-1"><b>Classification: </b>@Model.Classification</div>
+    <form method="post" asp-page="/ShoppingCart">
+        <input type="hidden" asp-for="BookId" />
+        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+        <span class="card-text">
+            <button type="submit" class="btn btn-success btn-sm float-end" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Item to Cart">Add to Cart</button>
+        </span>
+    </form>
     <div class="card-footer text-muted">
         <div class="flex justify-content-around">
             <p class="text-muted">ISBN: @Model.Isbn</p>

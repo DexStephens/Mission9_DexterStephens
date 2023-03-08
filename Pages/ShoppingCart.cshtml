@@ -1,0 +1,34 @@
+﻿@page
+@model Mission9_DexterStephens.Pages.ShoppingCartModel
+
+<table class="table table-bordered-block table-striped">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(CartItem cartItem in Model.Cart.CartItems)
+        {
+            <tr>
+                <td>@cartItem.Book.Title</td>
+                <td>@cartItem.Quantity</td>
+                <td>@cartItem.Book.Price</td>
+                <td>@(cartItem.Quantity * cartItem.Book.Price)</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">Total:</td>
+            <td>@Model.Cart.CalculateTotal().ToString("c")</td>
+        </tr>
+    </tfoot>
+</table>
+
+<div>
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Continue Shopping</a>
+</div>
