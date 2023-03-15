@@ -1,0 +1,5 @@
+﻿@model Cart
+
+<img src="~/lib/img/shopping-cart-outline-svgrepo-com.svg" height="30" width="30" class="mx-1"/>
+<div class="mx-2">Cart Total: @Model.CalculateTotal().ToString("c")</div>
+<div class="mx-2">Items: @Model.CartItems.Sum(x => x.Quantity).ToString()</div>

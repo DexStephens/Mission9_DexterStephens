@@ -12,28 +12,32 @@ namespace Mission9_DexterStephens.Pages
         public Cart Cart { get; set; }
         public string ReturnUrl { get; set; }
 
-        public ShoppingCartModel(IBookstoreRepository bookstoreRepository)
+        public ShoppingCartModel(IBookstoreRepository bookstoreRepository, Cart cart)
         {
             BookstoreRepository = bookstoreRepository;
+            Cart = cart;
         }
 
         public void OnGet(string returnUrl)
         {
             ReturnUrl = returnUrl ?? "/";
-            Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
         }
 
         public IActionResult OnPost(long bookId, string returnUrl) 
         {
             Books book = BookstoreRepository.Books.FirstOrDefault(x => x.BookId == bookId);
 
-            Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
-
             Cart.AddItem(book, 1);
 
-            HttpContext.Session.SetJson("cart", Cart);
-
             return RedirectToPage(new { ReturnUrl = returnUrl });
+        }
+
+        public IActionResult OnPostRemove(long bookId, string returnUrl)
+        {
+
+            Cart.RemoveItem(Cart.CartItems.First(x => x.Book.BookId == bookId).Book);
+
+            return RedirectToPage( new { ReturnUrl = returnUrl });
         }
     }
 }
